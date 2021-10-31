@@ -33,6 +33,7 @@ bool bst::insert(string f, string l, int n, string j){
 
 	//need to add in setHeights
 	bstNode *newNode = new bstNode(f,l,n,j);
+	newNode->printNode();
 	if(root == NULL){
 		root=newNode;
 		setHeight(root);
@@ -172,8 +173,8 @@ the tree in post-order
 		return;
 		}
 	else {
-		printTreePre(n->left);
-		printTreePre(n->right);
+		printTreePost(n->left);
+		printTreePost(n->right);
 		n->printNode();
 		}
 }
