@@ -31,7 +31,7 @@ cout <<"Joke:"<<student->joke<<endl;
 cout << "Height:"<<height<<endl;
 }
 bstNode::~bstNode(){
-	delete student;
+	delete (student);
 }
 
 

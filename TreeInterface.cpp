@@ -43,7 +43,7 @@ void TreeInterface::Interface() {
 			}
 			else {
 				bstNode *s = tree->find(l,f);
-				//s->printNode();
+				s->printNode();
 			}
 			break;
 		}
@@ -84,7 +84,7 @@ void TreeInterface::Interface() {
 				cout << endl << f << " " << l << " not in tree " << endl;
 			}
 			else {
-				//t->printNode();
+				t->printNode();
 				cout << " ...has been removed. "<<endl;
 			}
 			break;

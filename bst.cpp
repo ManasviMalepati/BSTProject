@@ -33,7 +33,6 @@ bool bst::insert(string f, string l, int n, string j){
 
 	//need to add in setHeights
 	bstNode *newNode = new bstNode(f,l,n,j);
-	newNode->printNode();
 	if(root == NULL){
 		root=newNode;
 		setHeight(root);
@@ -108,6 +107,7 @@ Note that if you find the last name l, you must then check for the first name f.
 it’s not the same, you must keep searching until you find both the last name and the
 first name, and, if you don’t, return NULL*/
 	bstNode *compare = root;
+
 	while(compare!=NULL){
 		if(compare->student->last<l){
 			compare = compare->right;
@@ -117,7 +117,6 @@ first name, and, if you don’t, return NULL*/
 		}
 		else if (compare->student->last==l){
 			if(compare->student->first==f){
-				compare->printNode();
 				return compare;
 			}
 			else if(compare->student->first<f){
@@ -194,6 +193,9 @@ NOTE: I used the rightmost of the left child as a replacement. To get my output,
 must do the same.
 */
 	bstNode *t = find(l,f);
+	if(t==NULL){
+		return NULL;
+	}
 	bstNode *tmp =t;
 	if (t->right!=NULL&&t->left==NULL){
 		tmp= removeOneKid(t,false);
@@ -213,16 +215,16 @@ must do the same.
 			leftright=leftright->right;
 		}
 		bstNode *rightmost = remove(leftright->student->last,leftright->student->first);
-		if(t->parent->left->student->first == t->student->first){
-				if(t->parent->left->student->last == t->student->last){
+		if(t!=root){
+			if(t->parent->left==t){
 					t->parent->left = rightmost;
+					rightmost->parent = t->parent;
+				}
+			else if(t->parent->right == t){
+				t->parent->right = rightmost;
+				rightmost->parent = t->parent;
 				}
 		}
-		else if(t->parent->right->student->first == t->student->first){
-						if(t->parent->right->student->last == t->student->last){
-							t->parent->right = rightmost;
-						}
-				}
 		if(t->left!=NULL){
 			bstNode *left = t->left;
 			rightmost->left = left;
@@ -230,13 +232,13 @@ must do the same.
 		}
 		if(t->right!=NULL){
 			bstNode *right = t->right;
-			rightmost->parent = t->parent;
 			rightmost->right = right;
 			right->parent = rightmost;
 		}
+		root=rightmost;
 		t=NULL;
 		setHeight(rightmost);
-
+		root->printNode();
 	}
 	return tmp;
 }
@@ -246,18 +248,18 @@ bstNode *bst::removeNoKids(bstNode *tmp){
 /* for removing a node with no children
 */
 	bstNode *t = tmp;
-	if(tmp->parent->left->student->first == tmp->student->first){
-		if(tmp->parent->left->student->last == tmp->student->last){
-			tmp->parent->left = NULL;
-			tmp= NULL;
-		}
+	if(tmp==root){
+		tmp=NULL;
 	}
-	else if(tmp->parent->right->student->first == tmp->student->first){
-		if(tmp->parent->right->student->last == tmp->student->last){
-			tmp->parent->right = NULL;
-			tmp = NULL;
+	else if(tmp->parent->left == tmp){
+				tmp->parent->left = NULL;
+				tmp= NULL;
 		}
+	else if(tmp->parent->right==tmp){
+		tmp->parent->right = NULL;
+						tmp= NULL;
 	}
+
 	return t;
 }
 
@@ -266,10 +268,19 @@ bstNode *bst::removeOneKid(bstNode *tmp, bool leftFlag){
 child, with the leftFlag indicating whether the node’s child is either the left child
 or the right child.
 */
-	bstNode *p=tmp->parent;
 	bstNode *t = tmp;
-	if(tmp->parent->left->student->first == tmp->student->first){
-			if(tmp->parent->left->student->last == tmp->student->last){
+	if(tmp==root){
+		if(leftFlag==false){
+			root=tmp->right;
+		}
+		else{
+			root=tmp->left;
+		}
+		tmp=NULL;
+		return t;
+	}
+	else if(tmp->parent->left==tmp){
+		bstNode *p=tmp->parent;
 				if(leftFlag==false){
 					p->left = tmp->right;
 					tmp->right->parent = p;
@@ -283,9 +294,8 @@ or the right child.
 					return t;
 				}
 			}
-	}
-	else if(tmp->parent->right->student->first == tmp->student->first){
-				if(tmp->parent->right->student->last == tmp->student->last){
+	else if(tmp->parent->right==tmp){
+		bstNode *p=tmp->parent;
 					if(leftFlag==false){
 						p->right = tmp->right;
 						tmp->right->parent = p;
@@ -299,7 +309,6 @@ or the right child.
 						return t;
 					}
 				}
-		}
 	return NULL;
 }
 
@@ -309,10 +318,7 @@ void bst::setHeight(bstNode *n){
 	Thus you should set the height of the node being inserted (to 1) and then adjust the
 	heights of the node’s parent, grandparent, etc. up until either the height of the
 	node doesn’t change or you hit the root.*/
-	if (n == NULL) {
-		return;
-		}
-		else {
+
 			if(n->left==NULL&&n->right==NULL){
 				n->height =1;
 			}
@@ -330,8 +336,12 @@ void bst::setHeight(bstNode *n){
 					n->height = n->left->height+1;
 				}
 			}
+			if(n==root){
+				return;
+			}
+			else{
 			setHeight(n->parent);
-		}
+			}
 }
 void bst::clearTree() { //clears out an old tree
 	//This calls the recursive clearTree with the root node
