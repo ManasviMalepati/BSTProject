@@ -194,24 +194,60 @@ NOTE: I used the rightmost of the left child as a replacement. To get my output,
 must do the same.
 */
 	bstNode *t = find(l,f);
-
+	cout << "e";
+	bstNode *tmp =t;
 	if (t->right!=NULL&&t->left==NULL){
-		t = removeOneKid(t,false);
-		setHeight(t);
+		cout <<"m";
+		tmp= removeOneKid(t,false);
+		setHeight(tmp);
+		cout <<"i";
 	}
 	else if (t->right==NULL&&t->left!=NULL){
-			t = removeOneKid(t,true);
-			setHeight(t);
+			cout <<"l";
+			tmp = removeOneKid(t,true);
+			setHeight(tmp);
+			cout <<"y";
 		}
 	else if (t->right==NULL&&t->left==NULL){
-		t = removeNoKids(t);
-		setHeight(t);
+		cout <<"g";
+		tmp = removeNoKids(t);
+		setHeight(tmp);
+		cout <<"o";
 	}
-	else{
-		//two kids code
+	else if (t->right!=NULL&&t->left!=NULL){
+		bstNode *leftright = t->left;
+		while(leftright->right!=NULL){
+			leftright=leftright->right;
+		}
+		cout <<"f";
+		bstNode *rightmost = remove(leftright->student->last,leftright->student->first);
+		cout<< "a";
+		if(t->parent->left->student->first == t->student->first){
+				if(t->parent->left->student->last == t->student->last){
+					t->parent->left = rightmost;
+				}
+		}
+		else if(t->parent->right->student->first == t->student->first){
+						if(t->parent->right->student->last == t->student->last){
+							t->parent->right = rightmost;
+						}
+				}
+		if(t->left!=NULL){
+			bstNode *left = t->left;
+			rightmost->left = left;
+			left->parent = rightmost;
+		}
+		if(t->right!=NULL){
+			bstNode *right = t->right;
+			rightmost->parent = t->parent;
+			rightmost->right = right;
+			right->parent = rightmost;
+		}
+		t=NULL;
+		setHeight(rightmost);
 
 	}
-	return t;
+	return tmp;
 }
 
 
@@ -222,15 +258,13 @@ bstNode *bst::removeNoKids(bstNode *tmp){
 	if(tmp->parent->left->student->first == tmp->student->first){
 		if(tmp->parent->left->student->last == tmp->student->last){
 			tmp->parent->left = NULL;
-			delete(tmp->student);
-			delete(tmp);
+			tmp= NULL;
 		}
 	}
-	if(tmp->parent->right->student->first == tmp->student->first){
+	else if(tmp->parent->right->student->first == tmp->student->first){
 		if(tmp->parent->right->student->last == tmp->student->last){
 			tmp->parent->right = NULL;
-			delete(tmp->student);
-			delete(tmp);
+			tmp = NULL;
 		}
 	}
 	return t;
@@ -248,33 +282,29 @@ or the right child.
 				if(leftFlag==false){
 					p->left = tmp->right;
 					tmp->right->parent = p;
-					delete(tmp->student);
-					delete(tmp);
+					tmp=NULL;
 					return t;
 				}
 				else{
 					p->left = tmp->left;
 					tmp->left->parent = p;
-					delete(tmp->student);
-					delete(tmp);
+					tmp=NULL;
 					return t;
 				}
 			}
 	}
-	if(tmp->parent->right->student->first == tmp->student->first){
+	else if(tmp->parent->right->student->first == tmp->student->first){
 				if(tmp->parent->right->student->last == tmp->student->last){
 					if(leftFlag==false){
 						p->right = tmp->right;
 						tmp->right->parent = p;
-						delete(tmp->student);
-						delete(tmp);
+						tmp=NULL;
 						return t;
 					}
 					else{
 						p->right = tmp->left;
 						tmp->left->parent = p;
-						delete(tmp->student);
-						delete(tmp);
+						tmp=NULL;
 						return t;
 					}
 				}
