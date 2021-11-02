@@ -101,4 +101,21 @@ int main() {
 	TreeInterface *joketree = new TreeInterface("Jokes2.txt");
 	joketree->Interface();
 	return 0;
+
+/*Test the interface (comparing heights and counts with my output) with: (20 pts)
+a. Finding my name (Debra Yarrington)
+b. Finding your name (This will be different for each student) – if you are working with a
+partner, find both your name and your partners
+c. Finding Penelope Poltergeist
+d. Removing Gary Grotesque
+e. Finding Griselda Grotesque
+f. Adding Gary Grotesque
+g. Finding Gary Grotesque
+h. Finding Griselda Grotesque
+i. Finding at least 3 other students and checking to make sure the heights are correct
+ * */
+
+
+
+
 }

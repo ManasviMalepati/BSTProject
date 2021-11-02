@@ -194,34 +194,25 @@ NOTE: I used the rightmost of the left child as a replacement. To get my output,
 must do the same.
 */
 	bstNode *t = find(l,f);
-	cout << "e";
 	bstNode *tmp =t;
 	if (t->right!=NULL&&t->left==NULL){
-		cout <<"m";
 		tmp= removeOneKid(t,false);
 		setHeight(tmp);
-		cout <<"i";
 	}
 	else if (t->right==NULL&&t->left!=NULL){
-			cout <<"l";
 			tmp = removeOneKid(t,true);
 			setHeight(tmp);
-			cout <<"y";
 		}
 	else if (t->right==NULL&&t->left==NULL){
-		cout <<"g";
 		tmp = removeNoKids(t);
 		setHeight(tmp);
-		cout <<"o";
 	}
 	else if (t->right!=NULL&&t->left!=NULL){
 		bstNode *leftright = t->left;
 		while(leftright->right!=NULL){
 			leftright=leftright->right;
 		}
-		cout <<"f";
 		bstNode *rightmost = remove(leftright->student->last,leftright->student->first);
-		cout<< "a";
 		if(t->parent->left->student->first == t->student->first){
 				if(t->parent->left->student->last == t->student->last){
 					t->parent->left = rightmost;
