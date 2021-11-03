@@ -43,7 +43,7 @@ void TreeInterface::Interface() {
 			}
 			else {
 				bstNode *s = tree->find(l,f);
-				s->printNode();
+				//s->printNode();
 			}
 			break;
 		}
@@ -67,7 +67,7 @@ void TreeInterface::Interface() {
 			}
 			else {
 				bstNode *t = tree->find(lname,fname);
-				t->printNode();
+				//t->printNode();
 				cout << "... already in tree with " << endl;
 			}
 			break;

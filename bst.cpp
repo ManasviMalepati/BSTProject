@@ -117,6 +117,7 @@ first name, and, if you don’t, return NULL*/
 		}
 		else if (compare->student->last==l){
 			if(compare->student->first==f){
+				compare->printNode();
 				return compare;
 			}
 			else if(compare->student->first<f){
@@ -214,17 +215,38 @@ must do the same.
 		while(leftright->right!=NULL){
 			leftright=leftright->right;
 		}
+		cout << "Replacing with..."<<endl;
 		bstNode *rightmost = remove(leftright->student->last,leftright->student->first);
 		if(t!=root){
-			if(t->parent->left==t){
+			if(t->parent->left->student->last==t->student->last){
+				if(t->parent->left->student->first==t->student->first){
 					t->parent->left = rightmost;
 					rightmost->parent = t->parent;
 				}
-			else if(t->parent->right == t){
+				}
+			else if(t->parent->right->student->last == t->student->last){
+				if(t->parent->right->student->first == t->student->first){
 				t->parent->right = rightmost;
 				rightmost->parent = t->parent;
 				}
+			}
 		}
+		else if(t==root){
+					if(t->left!=NULL){
+								bstNode *left = t->left;
+								rightmost->left = left;
+								left->parent = rightmost;
+							}
+							if(t->right!=NULL){
+								bstNode *right = t->right;
+								rightmost->right = right;
+								right->parent = rightmost;
+							}
+							root=rightmost;
+							t=NULL;
+							setHeight(rightmost);
+							return tmp;
+				}
 		if(t->left!=NULL){
 			bstNode *left = t->left;
 			rightmost->left = left;
@@ -235,10 +257,8 @@ must do the same.
 			rightmost->right = right;
 			right->parent = rightmost;
 		}
-		root=rightmost;
 		t=NULL;
 		setHeight(rightmost);
-		root->printNode();
 	}
 	return tmp;
 }
@@ -248,16 +268,22 @@ bstNode *bst::removeNoKids(bstNode *tmp){
 /* for removing a node with no children
 */
 	bstNode *t = tmp;
-	if(tmp==root){
+	if(tmp->student->first==root->student->first){
+		if(tmp->student->last==root->student->last){
 		tmp=NULL;
+		}
 	}
-	else if(tmp->parent->left == tmp){
+	else if(tmp->parent->left->student->first == tmp->student->first){
+		if(tmp->parent->left->student->last==tmp->student->last){
 				tmp->parent->left = NULL;
 				tmp= NULL;
 		}
-	else if(tmp->parent->right==tmp){
-		tmp->parent->right = NULL;
+	}
+	else if(tmp->parent->right->student->first == tmp->student->first){
+		if(tmp->parent->right->student->last==tmp->student->last){
+						tmp->parent->right = NULL;
 						tmp= NULL;
+		}
 	}
 
 	return t;
@@ -269,7 +295,8 @@ child, with the leftFlag indicating whether the node’s child is either the left 
 or the right child.
 */
 	bstNode *t = tmp;
-	if(tmp==root){
+	if(tmp->student->last==root->student->last){
+		if(tmp->student->first==root->student->first){
 		if(leftFlag==false){
 			root=tmp->right;
 		}
@@ -278,8 +305,10 @@ or the right child.
 		}
 		tmp=NULL;
 		return t;
+		}
 	}
-	else if(tmp->parent->left==tmp){
+	else if(tmp->parent->left->student->last==tmp->student->last){
+		if(tmp->parent->left->student->first==tmp->student->first){
 		bstNode *p=tmp->parent;
 				if(leftFlag==false){
 					p->left = tmp->right;
@@ -294,7 +323,9 @@ or the right child.
 					return t;
 				}
 			}
-	else if(tmp->parent->right==tmp){
+	}
+	else if(tmp->parent->right->student->last==tmp->student->last){
+		if(tmp->parent->right->student->first==tmp->student->first){
 		bstNode *p=tmp->parent;
 					if(leftFlag==false){
 						p->right = tmp->right;
@@ -309,6 +340,7 @@ or the right child.
 						return t;
 					}
 				}
+	}
 	return NULL;
 }
 
